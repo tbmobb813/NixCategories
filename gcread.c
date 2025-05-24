@@ -30,6 +30,7 @@
 #include "filter.h"
 #include "language.h"
 #include "logger.h"
+#include "ini.h"
 
 #define GAME_FOLDER "/PSP/GAME"
 
