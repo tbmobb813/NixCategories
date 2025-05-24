@@ -160,6 +160,19 @@ int sceIoDreadPatchedFolder(SceUID fd, SceIoDirent *dir) {
             if (res > 0) {
                 kprintf("checking %s\n", dir->d_name);
                 if (dir->d_name[0] != '.') {
+                    //
+                    const char* ini_category = get_category_from_ini(dir->d_name);
+                    if (ini_category && sce_paf_private_strcmp(ini_category, category) == 0) {
+                        kprintf("INI category match: %s => %s\n", dir->d_name, ini_category);
+                        u64 mtime;
+                        sceRtcGetTick((psptime *) &dir->d_stat.st_mtime, &mtime);
+                        if (AddCategory(folder_list, dir->d_name, mtime, global_pos)) {
+                            sce_paf_private_snprintf(user_buffer, 128, "%s/%s", opened_path, dir->d_name);
+                            openfd = sceIoDopen(user_buffer);
+                        }
+                        continue;
+                    }
+                    
                     if(is_category_folder(dir) && has_directories(opened_path, dir->d_name)) {
                         u64 mtime;
 
