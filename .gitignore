@@ -1,0 +1,20 @@
+# Build artifacts
+*.elf
+*.prx
+*.o
+*.a
+*.so
+*.d
+
+# PSP SDK output
+EBOOT.PBP
+DATA.BIN
+PARAM.SFO
+
+# Backup/Temp files
+*.bak
+*.swp
+*.tmp
+
+# PSP emulator/user data
+ms0/
