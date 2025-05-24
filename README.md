@@ -10,6 +10,23 @@ It improves how games and homebrew apps are organized on the XMB by supporting:
 - ✅ Future plans for favorites, smart sorting, and visual tags
 
 ---
+📌 Roadmap INI-based virtual categories
+
+Favorite tagging system
+
+Sort by last played / size / region
+
+Category icon support
+
+Companion config tool (PC or Web)
+
+
+🙏 Credits
+Originally developed by Bubbletune and Codestation
+Modernized and extended by @yourgithubname for NixLevel
+
+Licensed under the GNU GPL v3
+
 
 ## 🔧 Installation
 
@@ -35,13 +52,3 @@ NPUH10027 = Tekken 6
 [RPG]
 ULES00177 = Final Fantasy Tactics
 
-
-📌 Roadmap INI-based virtual categories
-
-Favorite tagging system
-
-Sort by last played / size / region
-
-Category icon support
-
-Companion config tool (PC or Web)
