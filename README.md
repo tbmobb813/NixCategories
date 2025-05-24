@@ -35,3 +35,13 @@ NPUH10027 = Tekken 6
 [RPG]
 ULES00177 = Final Fantasy Tactics
 
+
+📌 Roadmap INI-based virtual categories
+
+Favorite tagging system
+
+Sort by last played / size / region
+
+Category icon support
+
+Companion config tool (PC or Web)
