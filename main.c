@@ -47,6 +47,8 @@ u32 text_size_game;
 static STMOD_HANDLER previous;
 
 int OnModuleStart(SceModule2 *mod) {
+	load_ini_config(); // Load .ini cat mapping first
+	
     //kprintf(">> %s: loading %s, text_addr: %08X\n", __func__, mod->modname, mod->text_addr);
 	if (sce_paf_private_strcmp(mod->modname, "game_plugin_module") == 0) {
 
