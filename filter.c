@@ -22,6 +22,7 @@
 #include "utils.h"
 #include "config.h"
 #include "logger.h"
+#include "ini.h"
 
 extern int model;
 
