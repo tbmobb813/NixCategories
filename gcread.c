@@ -65,7 +65,7 @@ inline void trim(char *str) {
     }
 }
 
-int is_category_folder(SceIoDirent *dir) {
+static int is_category_folder(SceIoDirent *dir) {
     kprintf("checking %s\n", dir->d_name);
     if(FIO_S_ISDIR(dir->d_stat.st_mode)) {
         if(!*category) {
@@ -129,7 +129,7 @@ SceUID sceIoDopenPatched(const char *path) {
     return fd;
 }
 
-int sceIoDreadPatchedFolder(SceUID fd, SceIoDirent *dir) {
+static int sceIoDreadPatchedFolder(SceUID fd, SceIoDirent *dir) {
     int res;
 
     if (fd == game_dfd) {
@@ -233,7 +233,7 @@ int sceIoDreadPatched(SceUID fd, SceIoDirent *dir) {
     return ret;
 }
 
-int gcGetStatIso(SceIoStat *stat) {
+static int gcGetStatIso(SceIoStat *stat) {
     if(config.prefix) {
         sce_paf_private_strcpy(user_buffer, "xxx:/ISO/CAT_");
         sce_paf_private_strcpy(user_buffer + 13, category);
@@ -298,7 +298,7 @@ char *ReturnBasePathPatched(char *base) {
     return base;
 }
 
-int sceIoDclosePatched(SceUID fd) {
+static int sceIoDclosePatched(SceUID fd) {
     kprintf("closing dir, fd: %08X\n", fd);
     if(config.mode == MODE_FOLDER && fd == game_dfd) {
         // add the uncategorized content in folder mode
@@ -316,7 +316,7 @@ int sceIoDclosePatched(SceUID fd) {
     return sceIoDclose(fd);
 }
 
-int sce_paf_private_snprintf_patched(char *a0, int a1, const char *a2, void *a3, void *t0) {
+static int sce_paf_private_snprintf_patched(char *a0, int a1, const char *a2, void *a3, void *t0) {
     sce_paf_private_strcpy((char *)a1, (char *)t0);
     return sce_paf_private_snprintf(a0, 291, a2, a3, t0);
 }
