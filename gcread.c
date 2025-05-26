@@ -31,6 +31,7 @@
 #include "language.h"
 #include "logger.h"
 #include "ini.h"
+#include "ini_loader.h"
 
 #define GAME_FOLDER "/PSP/GAME"
 
@@ -131,7 +132,7 @@ SceUID sceIoDopenPatched(const char *path) {
 
 static int sceIoDreadPatchedFolder(SceUID fd, SceIoDirent *dir) {
     int res;
-
+        
     if (fd == game_dfd) {
         while (1) {
             if (openfd >= 0) {
@@ -161,11 +162,25 @@ static int sceIoDreadPatchedFolder(SceUID fd, SceIoDirent *dir) {
                 kprintf("checking %s\n", dir->d_name);
                 if (dir->d_name[0] != '.') {
                     //
-                    const char* ini_category = get_category_from_ini(dir->d_name);
+                    const char* ini_category = lookup_category(dir->d_name);
                     if (ini_category && sce_paf_private_strcmp(ini_category, category) == 0) {
                         kprintf("INI category match: %s => %s\n", dir->d_name, ini_category);
                         u64 mtime;
-                        sceRtcGetTick((psptime *) &dir->d_stat.st_mtime, &mtime);
+                        SceIoStat stat;
+                        char full_path[128];
+                        sce_paf_private_snprintf(full_path, sizeof(full_path), "%s/%s", opened_path, dir->d_name);
+
+                        if (sceIoGetstat(full_path, &stat) >= 0) {
+
+                            #ifdef HAVE_MTIME
+                            mtime = stat.st_mtime;
+                            #else
+                            mtime = 0;
+                            #endif
+                        }
+                        else {
+                            mtime = 0;
+                        }
                         if (AddCategory(folder_list, dir->d_name, mtime, global_pos)) {
                             sce_paf_private_snprintf(user_buffer, 128, "%s/%s", opened_path, dir->d_name);
                             openfd = sceIoDopen(user_buffer);
@@ -177,7 +192,21 @@ static int sceIoDreadPatchedFolder(SceUID fd, SceIoDirent *dir) {
                         u64 mtime;
 
                         kprintf("category match: %s\n", dir->d_name);
-                        sceRtcGetTick((pspTime *) &dir->d_stat.st_mtime, &mtime);
+                        SceIoStat stat;
+                        char full_path[128];
+                        sce_paf_private_snprintf(full_path, sizeof(full_path), "%s/%s", opened_path, dir->d_name);
+
+                        if (sceIoGetstat(full_path, &stat) >= 0) {
+                            
+                            #ifdef HAVE_MTIME
+                            mtime = stat.st_mtime;
+                            #else
+                            mtime = 0;
+                            #endif
+                        }
+                        else {
+                            mtime = 0;
+                        }
                         kprintf("Adding %s\n", dir->d_name);
                         if(AddCategory(folder_list, dir->d_name, mtime, global_pos)) {
                             sce_paf_private_snprintf(user_buffer, 128, "%s/%s", opened_path, dir->d_name);

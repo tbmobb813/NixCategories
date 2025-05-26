@@ -237,7 +237,11 @@ void IndexCategories(Category *head[], const char *path, int location) {
             }
             if(match) {
                 match = 0;
-                sceRtcGetTick((pspTime *) &dir.d_stat.st_mtime, &mtime);
+
+                ScePspDateTime psptime;
+                sceRtcGetCurrentClockLocalTime(&psptime);
+                sceRtcGetTick(&psptime, &mtime);
+
                 kprintf("Adding category: [%s]\n", dir.d_name);
                 AddCategory(head, dir.d_name, mtime, location);
             }

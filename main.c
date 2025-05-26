@@ -27,6 +27,9 @@
 #include "pspdefs.h"
 #include "config.h"
 #include "logger.h"
+#include <pspiofilemgr.h>
+#include "ini.h"
+#include "ini_loader.h"
 
 // change the module name back to GCLite once PRO stops doing weird things with plugins
 PSP_MODULE_INFO("Game_Categories_Light", 0x0807, 1, 5);
@@ -48,6 +51,8 @@ static STMOD_HANDLER previous;
 
 int OnModuleStart(SceModule2 *mod) {
 	load_ini_config(); // Load .ini cat mapping first
+    load_ini_categories("ms0:/seplugins/categories.ini");
+
 	
     //kprintf(">> %s: loading %s, text_addr: %08X\n", __func__, mod->modname, mod->text_addr);
 	if (sce_paf_private_strcmp(mod->modname, "game_plugin_module") == 0) {
